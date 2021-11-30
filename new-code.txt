@@ -1,0 +1,39 @@
+function [V, W, TargDir] = purepursuit(current_pos)
+% pp = controllerPurePursuit;
+
+Waypoints = [2.00    4.00; %changed the waypoints
+            2.00    10.00;
+            4.00    4.00;];
+robotCurrentLocation = current_pos(1,:);
+
+V = 0.5;
+x = current_pos(1);
+y = current_pos(2);
+theta = current_pos(3);
+l = 0.1;
+W = theta
+
+u = diff(x)/cos(theta);
+phi1 = (u+W*l)/0.2;
+phi2 = (u-W*l)/0.2;
+
+
+% r = l^2/(2*x)
+
+% dx = diff(current_pos(1,:));
+% dy = diff(current_pos);
+
+% if theta==NaN
+%     W = 0.1
+% else 
+%    W = theta 
+% end
+TargDir = 0.1*atand( y/x )
+     %path(1,:);
+% robotGoal = Waypoint(end,:);
+initialOrientation = 0;
+% TargDir = 0.23
+% [V, W, TargDir] = controller(pose)
+
+% [vel,angvel,lookaheadpoint] = controller(pose)
+

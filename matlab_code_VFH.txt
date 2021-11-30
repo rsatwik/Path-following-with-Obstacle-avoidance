@@ -1,0 +1,33 @@
+function [y,w_ij]= fcn(Ranges, Angels, TargDir,RobotPos)
+a = 100 * ones(31,1);
+b = 20.0;
+targetSector = 0;
+range = Ranges(1:31);
+angle = Angels(1:21);
+w_ij = 0.81 * (a - b * (range));
+
+% range = range(:,~all(isnan(range)))
+% y = w_ij;
+thetaRobot = RobotPos(3);
+% targetSector = uint32( 21 * (TargDir + thetaRobot - pi/2) / pi);
+targetSector = uint32(( (TargDir - thetaRobot)*20) / pi );
+thetaVally = 0.00;
+if w_ij(targetSector+1) > 45
+    for i = 1:31
+        if isnan(w_ij(i))
+            thetaVally = (20 - i )* pi/20;
+            break;
+        end
+        
+    end
+%  theta vally
+else
+    thetaVally =  double((20 - targetSector-10)) * pi/20;
+end
+% steeringDir = pi/2  - (thetaVally) ;
+if thetaVally >= pi/2
+    y = ( thetaVally - pi/2 );
+else
+    y = pi/2 - thetaVally ;
+end
+end

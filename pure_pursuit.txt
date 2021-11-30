@@ -1,0 +1,27 @@
+function [V, W, TargDir] = purepursuit(current_pos, WP)
+% pp = controllerPurePursuit;
+
+%WP = [2.00    10.00;
+ %     10.00    4.00;];
+robotCurrentLocation = current_pos(1,:);
+
+V = 0.5;
+x = current_pos(1);
+y = current_pos(2);
+theta = current_pos(3);
+if x<3 & y<10
+    i=1
+else
+    i=2
+end
+
+theta_new=atan2((WP(i,2)-y),(WP(1,i)-x))
+TargDir =  theta_new - theta
+l = ((WP(i,2)-y)^2+(WP(1,i)-x)^2)
+r = l/(2*x)
+W = V/r
+if x>10
+    V=0
+    W=0
+    TargDir=0
+end

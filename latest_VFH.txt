@@ -1,0 +1,56 @@
+function [y,w_ij]= VFH(Ranges, Angels, TargDir,RobotPos)
+a = 100 * ones(21,1);
+b = 20.0;
+targetSector = 0;
+range = Ranges(1:21);
+
+angle = Angels(1:21);
+w_ij = 0.81 * (a - b * (range));
+for i=1:21
+    if isnan(w_ij(i))
+        w_ij(i)=0
+    end
+end
+
+% y = w_ij;
+
+y=0
+thetaRobot = RobotPos(3);
+
+theta_threshold = find(w_ij>65);
+theta_valley = find(w_ij<30);
+% targetSector = uint32( 21 * (TargDir + thetaRobot - pi/2) / pi);
+% targetSector = uint32((TargDir)*57.3248/(9)); 
+% ang_index = find(abs(Angels(theta_threshold))); 
+if theta_valley>0
+    if w_ij(theta_threshold) > 70
+        if w_ij(9)>60
+            y = pi/2 - Angels(theta_valley(1))
+         else
+            y = Angels(theta_valley(1))
+        
+        end
+    else
+        y = TargDir
+    end
+end
+% thetaVally = 0.00;
+% if w_ij(ang) > 55
+%     for i = 1:21
+%         if isnan(w_ij(i))
+%             thetaVally = (21 - i )* pi/21;
+%             break;
+%         end
+%         
+%     end
+%  theta vally
+% else
+%     thetaVally =  double((21 - targetSector-10)) * pi/21;
+% end
+% steeringDir = pi/2  - (thetaVally) ;
+% if thetaVally >= pi/2
+%     y = ( thetaVally + pi/2 );
+% else
+%     y = TargDir;%pi/2 - thetaVally ;
+
+end
